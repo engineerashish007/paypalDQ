@@ -23,8 +23,6 @@ def end_conn(conn):
  
 #validate file and automatically open it after getting saved
 def file_validate(wb,workbook_name,file_location):
-    
-    """I'll automatise some stuffs for file path validation and opening file directly from that location later"""
     #assert os.isvalidpath(file_location),"Please enter a valid path"
     try:
         with open(file_location, 'x'): # OSError if file exists or is invalid
