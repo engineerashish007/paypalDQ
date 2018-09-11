@@ -4,9 +4,11 @@ Created on Wed Aug 22 14:40:18 2018
 
 @author: Ashish Vicky
 """
-
+import os
 import pymysql
 from openpyxl import Workbook
+#import validate_file
+#from validate_file import file_validate
 
 db_conf=[]
 #getting connection
@@ -18,6 +20,26 @@ def get_conn(db_conf):
 #ending connection
 def end_conn(conn):
     conn.close()
+ 
+#validate file and automatically open it after getting saved
+def file_validate(wb,workbook_name,file_location):
+    
+    """I'll automatise some stuffs for file path validation and opening file directly from that location later"""
+    #assert os.isvalidpath(file_location),"Please enter a valid path"
+    try:
+        with open(file_location, 'x'): # OSError if file exists or is invalid
+            print('File saved successfully')
+    except OSError:
+        'Please enter a valid file location'
+        # handle error here
+    filepath=file_location+workbook_name+".xlsx"
+    #saving the workbook
+    wb.save(filepath)
+    print('File saved successfully')
+    print('opening the saved file')
+    os.startfile(filepath)
+    
+    
     
 #reading data from mysql tables
 def read_from_mysql(filename):
@@ -181,12 +203,13 @@ def write_to_xl(res):
                     new_row.append(words)
                     pos=pos+1
                 ws.append(new_row)
-    #naming the workbook and file position where it is to be placed        
-    workbook_name = "test_workbook_8"
-    filepath='C:/Users/Ashish Vicky/Documents/POCs/Platform/code_ashish/resultsheet/'+workbook_name
-    #saving the workbook
-    wb.save(filepath+".xlsx")
-        
+    #naming the workbook and file position where it is to be placed     
+    
+    workbook_name =input('Please enter workbook name:')
+    file_location=input('Please enter valid file location:')
+    file_validate(wb,workbook_name,file_location)
+    #opening the saved file automatically
+    
     end_conn(conn)
         #conn.close()
     
